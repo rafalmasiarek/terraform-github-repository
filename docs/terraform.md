@@ -7,7 +7,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
-| <a name="requirement_github"></a> [github](#requirement\_github) | >= 6.11, < 7.0 |
+| <a name="requirement_github"></a> [github](#requirement\_github) | >= 6.13.0, < 7.0.0 |
 
 ### Modules
 
@@ -17,7 +17,10 @@ No modules.
 
 | Name | Type |
 |------|------|
+| [github_actions_environment_secret.environment_secret](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_environment_secret) | resource |
+| [github_actions_environment_variable.environment_variable](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_environment_variable) | resource |
 | [github_actions_secret.repository_secret](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_secret) | resource |
+| [github_actions_variable.repository_variable](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/actions_variable) | resource |
 | [github_app_installation_repository.app_installation_repository](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/app_installation_repository) | resource |
 | [github_branch.branch](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch) | resource |
 | [github_branch_default.default](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/branch_default) | resource |
@@ -27,8 +30,11 @@ No modules.
 | [github_repository.repository](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository) | resource |
 | [github_repository_autolink_reference.repository_autolink_reference](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_autolink_reference) | resource |
 | [github_repository_collaborator.collaborator](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_collaborator) | resource |
+| [github_repository_dependabot_security_updates.dependabot_security_updates](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_dependabot_security_updates) | resource |
 | [github_repository_deploy_key.deploy_key](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_deploy_key) | resource |
 | [github_repository_deploy_key.deploy_key_computed](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_deploy_key) | resource |
+| [github_repository_environment.environment](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_environment) | resource |
+| [github_repository_environment_deployment_policy.deployment_policy](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_environment_deployment_policy) | resource |
 | [github_repository_ruleset.ruleset](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_ruleset) | resource |
 | [github_repository_webhook.repository_webhook](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_webhook) | resource |
 | [github_team_repository.team_repository](https://registry.terraform.io/providers/integrations/github/latest/docs/resources/team_repository) | resource |
@@ -38,6 +44,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_actions_variables"></a> [actions\_variables](#input\_actions\_variables) | Configure GitHub Actions variables for the repository. | `map(string)` | `{}` | no |
 | <a name="input_admin_collaborators"></a> [admin\_collaborators](#input\_admin\_collaborators) | A list of users to add as collaborators granting them admin permission. | `list(string)` | `[]` | no |
 | <a name="input_admin_team_ids"></a> [admin\_team\_ids](#input\_admin\_team\_ids) | A list of teams by id to grant admin permission to. | `list(string)` | `[]` | no |
 | <a name="input_admin_teams"></a> [admin\_teams](#input\_admin\_teams) | A list of teams by name or slug to grant admin permission to. | `list(string)` | `[]` | no |
@@ -51,17 +58,19 @@ No modules.
 | <a name="input_archive_on_destroy"></a> [archive\_on\_destroy](#input\_archive\_on\_destroy) | Set to false to not archive the repository instead of deleting on destroy. | `bool` | `true` | no |
 | <a name="input_archived"></a> [archived](#input\_archived) | Specifies if the repository should be archived. | `bool` | `false` | no |
 | <a name="input_auto_init"></a> [auto\_init](#input\_auto\_init) | Produce an initial commit in the repository. | `bool` | `null` | no |
-| <a name="input_autolink_references"></a> [autolink\_references](#input\_autolink\_references) | Configure autolink references. | <pre>list(object({<br>    key_prefix          = string<br>    target_url_template = string<br>  }))</pre> | `[]` | no |
+| <a name="input_autolink_references"></a> [autolink\_references](#input\_autolink\_references) | Configure autolink references. | <pre>list(object({<br>    key_prefix          = string<br>    target_url_template = string<br>    is_alphanumeric     = optional(bool, true)<br>  }))</pre> | `[]` | no |
 | <a name="input_branch_protections_v3"></a> [branch\_protections\_v3](#input\_branch\_protections\_v3) | A list of branch protections to apply to the repository. | `any` | `[]` | no |
 | <a name="input_branch_protections_v4"></a> [branch\_protections\_v4](#input\_branch\_protections\_v4) | A list of v4 branch protections to apply to the repository. | `any` | `[]` | no |
 | <a name="input_branches"></a> [branches](#input\_branches) | A list of branches to be created in this repository. | `any` | `[]` | no |
 | <a name="input_default_branch"></a> [default\_branch](#input\_default\_branch) | The name of the default branch of the repository. | `string` | `null` | no |
 | <a name="input_defaults"></a> [defaults](#input\_defaults) | DEPRECATED. Please convert defaults to Terraform Module for\_each. | `any` | `{}` | no |
 | <a name="input_delete_branch_on_merge"></a> [delete\_branch\_on\_merge](#input\_delete\_branch\_on\_merge) | Delete the merged branch after merging a pull request. | `bool` | `null` | no |
+| <a name="input_dependabot_security_updates_enabled"></a> [dependabot\_security\_updates\_enabled](#input\_dependabot\_security\_updates\_enabled) | Enable or disable Dependabot automated security fixes (pull requests) for the repository. Leave null to not manage this setting. | `bool` | `null` | no |
 | <a name="input_deploy_keys"></a> [deploy\_keys](#input\_deploy\_keys) | Configure deploy keys attached directly to the repository. | `any` | `[]` | no |
 | <a name="input_deploy_keys_computed"></a> [deploy\_keys\_computed](#input\_deploy\_keys\_computed) | Configure computed deploy keys attached directly to the repository. | `any` | `[]` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description of the repository. | `string` | `""` | no |
 | <a name="input_encrypted_secrets"></a> [encrypted\_secrets](#input\_encrypted\_secrets) | Configure encrypted GitHub Actions secrets. | `map(string)` | `{}` | no |
+| <a name="input_environments"></a> [environments](#input\_environments) | Configure GitHub repository environments, used for deployment protection rules, keyed by environment name. | <pre>map(object({<br>    wait_timer          = optional(number)<br>    can_admins_bypass   = optional(bool, true)<br>    prevent_self_review = optional(bool, false)<br><br>    reviewers = optional(object({<br>      teams = optional(list(string), [])<br>      users = optional(list(string), [])<br>    }))<br><br>    deployment_branch_policy = optional(object({<br>      protected_branches     = bool<br>      custom_branch_policies = bool<br>    }))<br><br>    deployment_branch_policies = optional(list(object({<br>      branch_pattern = optional(string)<br>      tag_pattern    = optional(string)<br>    })), [])<br><br>    plaintext_secrets = optional(map(string), {})<br>    encrypted_secrets = optional(map(string), {})<br>    variables         = optional(map(string), {})<br>  }))</pre> | `{}` | no |
 | <a name="input_extra_topics"></a> [extra\_topics](#input\_extra\_topics) | The list of additional topics of the repository. | `list(string)` | `[]` | no |
 | <a name="input_gitignore_template"></a> [gitignore\_template](#input\_gitignore\_template) | Use the name of the template without the extension. For example, Haskell. | `string` | `null` | no |
 | <a name="input_has_discussions"></a> [has\_discussions](#input\_has\_discussions) | Enable GitHub Discussions for the repository. | `bool` | `null` | no |
@@ -90,6 +99,7 @@ No modules.
 | <a name="input_push_team_ids"></a> [push\_team\_ids](#input\_push\_team\_ids) | A list of teams by id to grant push permission to. | `list(string)` | `[]` | no |
 | <a name="input_push_teams"></a> [push\_teams](#input\_push\_teams) | A list of teams by name or slug to grant push permission to. | `list(string)` | `[]` | no |
 | <a name="input_rulesets"></a> [rulesets](#input\_rulesets) | A list of repository rulesets to apply to the repository. | `any` | `[]` | no |
+| <a name="input_security_and_analysis"></a> [security\_and\_analysis](#input\_security\_and\_analysis) | Configure GitHub Advanced Security and secret scanning features for the repository. Leave null to not manage this setting. | <pre>object({<br>    advanced_security               = optional(object({ status = string }))<br>    secret_scanning                 = optional(object({ status = string }))<br>    secret_scanning_push_protection = optional(object({ status = string }))<br>  })</pre> | `null` | no |
 | <a name="input_squash_merge_commit_message"></a> [squash\_merge\_commit\_message](#input\_squash\_merge\_commit\_message) | Can be PR\_BODY, COMMIT\_MESSAGES, or BLANK. | `string` | `null` | no |
 | <a name="input_squash_merge_commit_title"></a> [squash\_merge\_commit\_title](#input\_squash\_merge\_commit\_title) | Can be PR\_TITLE or COMMIT\_OR\_PR\_TITLE. | `string` | `null` | no |
 | <a name="input_template"></a> [template](#input\_template) | Template repository to use. | <pre>object({<br>    owner      = string<br>    repository = string<br>  })</pre> | `null` | no |
@@ -106,10 +116,12 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_actions_variables"></a> [actions\_variables](#output\_actions\_variables) | List of repository-level Actions variable names. |
 | <a name="output_app_installations"></a> [app\_installations](#output\_app\_installations) | A map of deploy app installations keyed by installation id. |
 | <a name="output_branches"></a> [branches](#output\_branches) | A map of branch objects keyed by branch name. |
 | <a name="output_collaborators"></a> [collaborators](#output\_collaborators) | A map of collaborator objects keyed by collaborator.name. |
 | <a name="output_deploy_keys"></a> [deploy\_keys](#output\_deploy\_keys) | A map of deploy keys keyed by input id. |
+| <a name="output_environments"></a> [environments](#output\_environments) | A map of environment names keyed by environment name. |
 | <a name="output_full_name"></a> [full\_name](#output\_full\_name) | A string of the form 'orgname/reponame'. |
 | <a name="output_git_clone_url"></a> [git\_clone\_url](#output\_git\_clone\_url) | URL that can be provided to git clone to clone the repository anonymously via the git protocol. |
 | <a name="output_html_url"></a> [html\_url](#output\_html\_url) | URL to the repository on the web. |

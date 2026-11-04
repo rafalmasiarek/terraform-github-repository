@@ -35,7 +35,9 @@ locals {
   gh_labels     = local.var_gh_labels == null ? lookup(var.defaults, "issue_labels_merge_with_github_labels", true) : local.var_gh_labels
 
   issue_labels_merge_with_github_labels = local.gh_labels
-  vulnerability_alerts                  = var.vulnerability_alerts != null ? var.vulnerability_alerts : local.private ? false : true
+  vulnerability_alerts = var.vulnerability_alerts != null ? var.vulnerability_alerts : (
+    var.dependabot_security_updates_enabled == true ? true : (local.visibility == "private" ? false : true)
+  )
 
   pages = var.pages == null ? null : merge(
     {

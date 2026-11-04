@@ -15,6 +15,7 @@ repos:
     # Common errors
     - id: end-of-file-fixer
       name: "[pre-commit/pre-commit-hooks]end-of-file-fixer"
+      exclude: README.md
     - id: trailing-whitespace
       name: "[pre-commit/pre-commit-hooks]trailing-whitespace"
       args: ['--markdown-linebreak-ext=md']
