@@ -344,16 +344,16 @@ variable "rulesets" {
       for r in var.rulesets :
       alltrue([
         for actor in try(r.bypass_actors, []) :
-        contains(["Integration", "Team", "User", "OrganizationAdmin", "RepositoryRole", "DeployKey"], try(actor.actor_type, ""))
+        contains(["Integration", "Team", "User", "OrganizationAdmin", "RepositoryRole", "DeployKey", "EnterpriseOwner"], try(actor.actor_type, ""))
       ])
     ])
-    error_message = "Each bypass_actors.actor_type must be Integration, Team, User, OrganizationAdmin, RepositoryRole, or DeployKey."
+    error_message = "Each bypass_actors.actor_type must be Integration, Team, User, OrganizationAdmin, RepositoryRole, DeployKey, or EnterpriseOwner."
   }
 
   validation {
     condition = alltrue([
       for r in var.rulesets :
-      try(r.rules.commit_message_pattern == null, true) || (
+      try(r.rules.commit_message_pattern, null) == null ? true : (
         contains(["starts_with", "ends_with", "contains", "regex"], r.rules.commit_message_pattern.operator) &&
         length(try(r.rules.commit_message_pattern.pattern, "")) > 0
       )
@@ -364,7 +364,7 @@ variable "rulesets" {
   validation {
     condition = alltrue([
       for r in var.rulesets :
-      try(r.rules.branch_name_pattern == null, true) || (
+      try(r.rules.branch_name_pattern, null) == null ? true : (
         contains(["starts_with", "ends_with", "contains", "regex"], r.rules.branch_name_pattern.operator) &&
         length(try(r.rules.branch_name_pattern.pattern, "")) > 0
       )
@@ -375,7 +375,7 @@ variable "rulesets" {
   validation {
     condition = alltrue([
       for r in var.rulesets :
-      try(r.rules.tag_name_pattern == null, true) || (
+      try(r.rules.tag_name_pattern, null) == null ? true : (
         contains(["starts_with", "ends_with", "contains", "regex"], r.rules.tag_name_pattern.operator) &&
         length(try(r.rules.tag_name_pattern.pattern, "")) > 0
       )
@@ -386,7 +386,7 @@ variable "rulesets" {
   validation {
     condition = alltrue([
       for r in var.rulesets :
-      try(r.rules.commit_author_email_pattern == null, true) || (
+      try(r.rules.commit_author_email_pattern, null) == null ? true : (
         contains(["starts_with", "ends_with", "contains", "regex"], r.rules.commit_author_email_pattern.operator) &&
         length(try(r.rules.commit_author_email_pattern.pattern, "")) > 0
       )
@@ -397,7 +397,7 @@ variable "rulesets" {
   validation {
     condition = alltrue([
       for r in var.rulesets :
-      try(r.rules.committer_email_pattern == null, true) || (
+      try(r.rules.committer_email_pattern, null) == null ? true : (
         contains(["starts_with", "ends_with", "contains", "regex"], r.rules.committer_email_pattern.operator) &&
         length(try(r.rules.committer_email_pattern.pattern, "")) > 0
       )
