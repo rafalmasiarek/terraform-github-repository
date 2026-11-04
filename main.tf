@@ -50,35 +50,11 @@ resource "github_repository" "repository" {
         }
       }
 
-      dynamic "code_security" {
-        for_each = try(security_and_analysis.value.code_security, null) != null ? [security_and_analysis.value.code_security] : []
-
-        content {
-          status = code_security.value.status
-        }
-      }
-
       dynamic "secret_scanning" {
         for_each = try(security_and_analysis.value.secret_scanning, null) != null ? [security_and_analysis.value.secret_scanning] : []
 
         content {
           status = secret_scanning.value.status
-        }
-      }
-
-      dynamic "secret_scanning_ai_detection" {
-        for_each = try(security_and_analysis.value.secret_scanning_ai_detection, null) != null ? [security_and_analysis.value.secret_scanning_ai_detection] : []
-
-        content {
-          status = secret_scanning_ai_detection.value.status
-        }
-      }
-
-      dynamic "secret_scanning_non_provider_patterns" {
-        for_each = try(security_and_analysis.value.secret_scanning_non_provider_patterns, null) != null ? [security_and_analysis.value.secret_scanning_non_provider_patterns] : []
-
-        content {
-          status = secret_scanning_non_provider_patterns.value.status
         }
       }
 
@@ -566,6 +542,13 @@ resource "github_repository_dependabot_security_updates" "dependabot_security_up
 
   repository = github_repository.repository.name
   enabled    = var.dependabot_security_updates_enabled
+
+  lifecycle {
+    precondition {
+      condition     = !(var.dependabot_security_updates_enabled == true && var.vulnerability_alerts == false)
+      error_message = "dependabot_security_updates_enabled requires Dependabot alerts to be enabled first. Set vulnerability_alerts = true (or leave it unset) instead of explicitly disabling it."
+    }
+  }
 }
 
 resource "github_actions_variable" "repository_variable" {

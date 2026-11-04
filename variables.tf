@@ -483,25 +483,23 @@ variable "archive_on_destroy" {
 variable "security_and_analysis" {
   description = "Configure GitHub Advanced Security and secret scanning features for the repository. Leave null to not manage this setting."
   type = object({
-    advanced_security                     = optional(object({ status = string }))
-    code_security                         = optional(object({ status = string }))
-    secret_scanning                       = optional(object({ status = string }))
-    secret_scanning_ai_detection          = optional(object({ status = string }))
-    secret_scanning_non_provider_patterns = optional(object({ status = string }))
-    secret_scanning_push_protection       = optional(object({ status = string }))
+    advanced_security               = optional(object({ status = string }))
+    secret_scanning                 = optional(object({ status = string }))
+    secret_scanning_push_protection = optional(object({ status = string }))
   })
   default = null
 
+  # code_security, secret_scanning_ai_detection, and secret_scanning_non_provider_patterns
+  # are intentionally omitted: the integrations/github provider declares them in its schema
+  # but its calculateSecurityAndAnalysis/flattenSecurityAndAnalysis functions never send or
+  # read them, so setting them would be a silent no-op that drifts forever.
   validation {
     condition = var.security_and_analysis == null ? true : alltrue([
       for block in [
         try(var.security_and_analysis.advanced_security, null),
-        try(var.security_and_analysis.code_security, null),
         try(var.security_and_analysis.secret_scanning, null),
-        try(var.security_and_analysis.secret_scanning_ai_detection, null),
-        try(var.security_and_analysis.secret_scanning_non_provider_patterns, null),
         try(var.security_and_analysis.secret_scanning_push_protection, null),
-      ] : block == null || contains(["enabled", "disabled"], block.status)
+      ] : block == null ? true : contains(["enabled", "disabled"], block.status)
     ])
     error_message = "Each security_and_analysis.*.status must be \"enabled\" or \"disabled\"."
   }
