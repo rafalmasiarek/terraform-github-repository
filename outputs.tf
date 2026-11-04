@@ -68,3 +68,13 @@ output "app_installations" {
   value       = github_app_installation_repository.app_installation_repository
   description = "A map of deploy app installations keyed by installation id."
 }
+
+output "actions_variables" {
+  value       = [for v in github_actions_variable.repository_variable : v.variable_name]
+  description = "List of repository-level Actions variable names."
+}
+
+output "environments" {
+  value       = { for k, v in github_repository_environment.environment : k => v.environment }
+  description = "A map of environment names keyed by environment name."
+}

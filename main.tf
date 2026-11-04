@@ -38,6 +38,60 @@ resource "github_repository" "repository" {
     }
   }
 
+  dynamic "security_and_analysis" {
+    for_each = var.security_and_analysis != null ? [var.security_and_analysis] : []
+
+    content {
+      dynamic "advanced_security" {
+        for_each = try(security_and_analysis.value.advanced_security, null) != null ? [security_and_analysis.value.advanced_security] : []
+
+        content {
+          status = advanced_security.value.status
+        }
+      }
+
+      dynamic "code_security" {
+        for_each = try(security_and_analysis.value.code_security, null) != null ? [security_and_analysis.value.code_security] : []
+
+        content {
+          status = code_security.value.status
+        }
+      }
+
+      dynamic "secret_scanning" {
+        for_each = try(security_and_analysis.value.secret_scanning, null) != null ? [security_and_analysis.value.secret_scanning] : []
+
+        content {
+          status = secret_scanning.value.status
+        }
+      }
+
+      dynamic "secret_scanning_ai_detection" {
+        for_each = try(security_and_analysis.value.secret_scanning_ai_detection, null) != null ? [security_and_analysis.value.secret_scanning_ai_detection] : []
+
+        content {
+          status = secret_scanning_ai_detection.value.status
+        }
+      }
+
+      dynamic "secret_scanning_non_provider_patterns" {
+        for_each = try(security_and_analysis.value.secret_scanning_non_provider_patterns, null) != null ? [security_and_analysis.value.secret_scanning_non_provider_patterns] : []
+
+        content {
+          status = secret_scanning_non_provider_patterns.value.status
+        }
+      }
+
+      dynamic "secret_scanning_push_protection" {
+        for_each = try(security_and_analysis.value.secret_scanning_push_protection, null) != null ? [security_and_analysis.value.secret_scanning_push_protection] : []
+
+        content {
+          status = secret_scanning_push_protection.value.status
+        }
+      }
+    }
+  }
+
   dynamic "pages" {
     for_each = local.pages != null ? [local.pages] : []
 
@@ -125,6 +179,7 @@ resource "github_branch_protection" "branch_protection" {
       pull_request_bypassers          = try(required_pull_request_reviews.value.pull_request_bypassers, [])
       require_code_owner_reviews      = try(required_pull_request_reviews.value.require_code_owner_reviews, true)
       required_approving_review_count = try(required_pull_request_reviews.value.required_approving_review_count, 0)
+      require_last_push_approval      = try(required_pull_request_reviews.value.require_last_push_approval, false)
     }
   }
 
@@ -496,6 +551,7 @@ resource "github_repository_autolink_reference" "repository_autolink_reference" 
   repository          = github_repository.repository.name
   key_prefix          = each.value.key_prefix
   target_url_template = each.value.target_url_template
+  is_alphanumeric     = each.value.is_alphanumeric
 }
 
 resource "github_app_installation_repository" "app_installation_repository" {
@@ -503,4 +559,19 @@ resource "github_app_installation_repository" "app_installation_repository" {
 
   repository      = github_repository.repository.name
   installation_id = each.value
+}
+
+resource "github_repository_dependabot_security_updates" "dependabot_security_updates" {
+  count = var.dependabot_security_updates_enabled == null ? 0 : 1
+
+  repository = github_repository.repository.name
+  enabled    = var.dependabot_security_updates_enabled
+}
+
+resource "github_actions_variable" "repository_variable" {
+  for_each = var.actions_variables
+
+  repository    = github_repository.repository.name
+  variable_name = each.key
+  value         = each.value
 }

@@ -463,6 +463,7 @@ variable "autolink_references" {
   type = list(object({
     key_prefix          = string
     target_url_template = string
+    is_alphanumeric     = optional(bool, true)
   }))
   default = []
 }
@@ -477,6 +478,74 @@ variable "archive_on_destroy" {
   description = "Set to false to not archive the repository instead of deleting on destroy."
   type        = bool
   default     = true
+}
+
+variable "security_and_analysis" {
+  description = "Configure GitHub Advanced Security and secret scanning features for the repository. Leave null to not manage this setting."
+  type = object({
+    advanced_security                     = optional(object({ status = string }))
+    code_security                         = optional(object({ status = string }))
+    secret_scanning                       = optional(object({ status = string }))
+    secret_scanning_ai_detection          = optional(object({ status = string }))
+    secret_scanning_non_provider_patterns = optional(object({ status = string }))
+    secret_scanning_push_protection       = optional(object({ status = string }))
+  })
+  default = null
+
+  validation {
+    condition = var.security_and_analysis == null ? true : alltrue([
+      for block in [
+        try(var.security_and_analysis.advanced_security, null),
+        try(var.security_and_analysis.code_security, null),
+        try(var.security_and_analysis.secret_scanning, null),
+        try(var.security_and_analysis.secret_scanning_ai_detection, null),
+        try(var.security_and_analysis.secret_scanning_non_provider_patterns, null),
+        try(var.security_and_analysis.secret_scanning_push_protection, null),
+      ] : block == null || contains(["enabled", "disabled"], block.status)
+    ])
+    error_message = "Each security_and_analysis.*.status must be \"enabled\" or \"disabled\"."
+  }
+}
+
+variable "dependabot_security_updates_enabled" {
+  description = "Enable or disable Dependabot automated security fixes (pull requests) for the repository. Leave null to not manage this setting."
+  type        = bool
+  default     = null
+}
+
+variable "actions_variables" {
+  description = "Configure GitHub Actions variables for the repository."
+  type        = map(string)
+  default     = {}
+}
+
+variable "environments" {
+  description = "Configure GitHub repository environments, used for deployment protection rules, keyed by environment name."
+  type = map(object({
+    wait_timer          = optional(number)
+    can_admins_bypass   = optional(bool, true)
+    prevent_self_review = optional(bool, false)
+
+    reviewers = optional(object({
+      teams = optional(list(string), [])
+      users = optional(list(string), [])
+    }))
+
+    deployment_branch_policy = optional(object({
+      protected_branches     = bool
+      custom_branch_policies = bool
+    }))
+
+    deployment_branch_policies = optional(list(object({
+      branch_pattern = optional(string)
+      tag_pattern    = optional(string)
+    })), [])
+
+    plaintext_secrets = optional(map(string), {})
+    encrypted_secrets = optional(map(string), {})
+    variables         = optional(map(string), {})
+  }))
+  default = {}
 }
 
 variable "app_installations" {
