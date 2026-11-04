@@ -54,6 +54,12 @@ locals {
 resource "github_repository_environment" "environment" {
   for_each = var.environments
 
+  depends_on = [
+    github_repository_collaborator.collaborator,
+    github_team_repository.team_repository,
+    github_team_repository.team_repository_by_slug,
+  ]
+
   repository          = github_repository.repository.name
   environment         = each.key
   wait_timer          = try(each.value.wait_timer, null)
