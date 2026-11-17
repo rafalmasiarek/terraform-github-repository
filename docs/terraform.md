@@ -1,4 +1,5 @@
-<!-- BEGIN_TF_DOCS -->
+## Terraform Reference
+
 
 
 ### Requirements
@@ -131,20 +132,3 @@ No modules.
 | <a name="output_secrets"></a> [secrets](#output\_secrets) | List of secrets available. |
 | <a name="output_ssh_clone_url"></a> [ssh\_clone\_url](#output\_ssh\_clone\_url) | URL that can be provided to git clone to clone the repository via SSH. |
 | <a name="output_webhooks"></a> [webhooks](#output\_webhooks) | All attributes and arguments as returned by the github\_repository\_webhook resource. |
-
-### Examples
-
-```hcl
-module "example_repository" {
-  source = "../../"
-
-  name        = "example-basic-repo"
-  description = "Very basic example repository managed by Terraform."
-  visibility  = "public"
-  topics      = ["example", "terraform", "github"]
-  has_issues  = true
-  has_wiki    = false
-  archived    = false
-}
-```
-<!-- END_TF_DOCS -->
