@@ -1,5 +1,4 @@
 <!-- BEGIN_TF_DOCS -->
-## Documentation
 
 
 ### Requirements
@@ -58,7 +57,7 @@ No modules.
 | <a name="input_archive_on_destroy"></a> [archive\_on\_destroy](#input\_archive\_on\_destroy) | Set to false to not archive the repository instead of deleting on destroy. | `bool` | `true` | no |
 | <a name="input_archived"></a> [archived](#input\_archived) | Specifies if the repository should be archived. | `bool` | `false` | no |
 | <a name="input_auto_init"></a> [auto\_init](#input\_auto\_init) | Produce an initial commit in the repository. | `bool` | `null` | no |
-| <a name="input_autolink_references"></a> [autolink\_references](#input\_autolink\_references) | Configure autolink references. | <pre>list(object({<br>    key_prefix          = string<br>    target_url_template = string<br>    is_alphanumeric     = optional(bool, true)<br>  }))</pre> | `[]` | no |
+| <a name="input_autolink_references"></a> [autolink\_references](#input\_autolink\_references) | Configure autolink references. | <pre>list(object({<br/>    key_prefix          = string<br/>    target_url_template = string<br/>    is_alphanumeric     = optional(bool, true)<br/>  }))</pre> | `[]` | no |
 | <a name="input_branch_protections_v3"></a> [branch\_protections\_v3](#input\_branch\_protections\_v3) | A list of branch protections to apply to the repository. | `any` | `[]` | no |
 | <a name="input_branch_protections_v4"></a> [branch\_protections\_v4](#input\_branch\_protections\_v4) | A list of v4 branch protections to apply to the repository. | `any` | `[]` | no |
 | <a name="input_branches"></a> [branches](#input\_branches) | A list of branches to be created in this repository. | `any` | `[]` | no |
@@ -70,7 +69,7 @@ No modules.
 | <a name="input_deploy_keys_computed"></a> [deploy\_keys\_computed](#input\_deploy\_keys\_computed) | Configure computed deploy keys attached directly to the repository. | `any` | `[]` | no |
 | <a name="input_description"></a> [description](#input\_description) | A description of the repository. | `string` | `""` | no |
 | <a name="input_encrypted_secrets"></a> [encrypted\_secrets](#input\_encrypted\_secrets) | Configure encrypted GitHub Actions secrets. | `map(string)` | `{}` | no |
-| <a name="input_environments"></a> [environments](#input\_environments) | Configure GitHub repository environments, used for deployment protection rules, keyed by environment name. | <pre>map(object({<br>    wait_timer          = optional(number)<br>    can_admins_bypass   = optional(bool, true)<br>    prevent_self_review = optional(bool, false)<br><br>    reviewers = optional(object({<br>      teams = optional(list(string), [])<br>      users = optional(list(string), [])<br>    }))<br><br>    deployment_branch_policy = optional(object({<br>      protected_branches     = bool<br>      custom_branch_policies = bool<br>    }))<br><br>    deployment_branch_policies = optional(list(object({<br>      branch_pattern = optional(string)<br>      tag_pattern    = optional(string)<br>    })), [])<br><br>    plaintext_secrets = optional(map(string), {})<br>    encrypted_secrets = optional(map(string), {})<br>    variables         = optional(map(string), {})<br>  }))</pre> | `{}` | no |
+| <a name="input_environments"></a> [environments](#input\_environments) | Configure GitHub repository environments, used for deployment protection rules, keyed by environment name. | <pre>map(object({<br/>    wait_timer          = optional(number)<br/>    can_admins_bypass   = optional(bool, true)<br/>    prevent_self_review = optional(bool, false)<br/><br/>    reviewers = optional(object({<br/>      teams = optional(list(string), [])<br/>      users = optional(list(string), [])<br/>    }))<br/><br/>    deployment_branch_policy = optional(object({<br/>      protected_branches     = bool<br/>      custom_branch_policies = bool<br/>    }))<br/><br/>    deployment_branch_policies = optional(list(object({<br/>      branch_pattern = optional(string)<br/>      tag_pattern    = optional(string)<br/>    })), [])<br/><br/>    plaintext_secrets = optional(map(string), {})<br/>    encrypted_secrets = optional(map(string), {})<br/>    variables         = optional(map(string), {})<br/>  }))</pre> | `{}` | no |
 | <a name="input_extra_topics"></a> [extra\_topics](#input\_extra\_topics) | The list of additional topics of the repository. | `list(string)` | `[]` | no |
 | <a name="input_gitignore_template"></a> [gitignore\_template](#input\_gitignore\_template) | Use the name of the template without the extension. For example, Haskell. | `string` | `null` | no |
 | <a name="input_has_discussions"></a> [has\_discussions](#input\_has\_discussions) | Enable GitHub Discussions for the repository. | `bool` | `null` | no |
@@ -79,7 +78,7 @@ No modules.
 | <a name="input_has_wiki"></a> [has\_wiki](#input\_has\_wiki) | Enable GitHub Wiki for the repository. | `bool` | `null` | no |
 | <a name="input_homepage_url"></a> [homepage\_url](#input\_homepage\_url) | The website of the repository. | `string` | `null` | no |
 | <a name="input_is_template"></a> [is\_template](#input\_is\_template) | Tell GitHub that this is a template repository. | `bool` | `null` | no |
-| <a name="input_issue_labels"></a> [issue\_labels](#input\_issue\_labels) | Configure GitHub issue labels. | <pre>list(object({<br>    name        = string<br>    description = string<br>    color       = string<br>  }))</pre> | `[]` | no |
+| <a name="input_issue_labels"></a> [issue\_labels](#input\_issue\_labels) | Configure GitHub issue labels. | <pre>list(object({<br/>    name        = string<br/>    description = string<br/>    color       = string<br/>  }))</pre> | `[]` | no |
 | <a name="input_issue_labels_create"></a> [issue\_labels\_create](#input\_issue\_labels\_create) | Specify whether you want to force or suppress creation of issue labels. | `bool` | `null` | no |
 | <a name="input_issue_labels_merge_with_github_labels"></a> [issue\_labels\_merge\_with\_github\_labels](#input\_issue\_labels\_merge\_with\_github\_labels) | Specify if you want to merge and control GitHub default issue labels. | `bool` | `null` | no |
 | <a name="input_license_template"></a> [license\_template](#input\_license\_template) | Use the name of the license template without the extension. For example, mit or mpl-2.0. | `string` | `null` | no |
@@ -99,10 +98,10 @@ No modules.
 | <a name="input_push_team_ids"></a> [push\_team\_ids](#input\_push\_team\_ids) | A list of teams by id to grant push permission to. | `list(string)` | `[]` | no |
 | <a name="input_push_teams"></a> [push\_teams](#input\_push\_teams) | A list of teams by name or slug to grant push permission to. | `list(string)` | `[]` | no |
 | <a name="input_rulesets"></a> [rulesets](#input\_rulesets) | A list of repository rulesets to apply to the repository. | `any` | `[]` | no |
-| <a name="input_security_and_analysis"></a> [security\_and\_analysis](#input\_security\_and\_analysis) | Configure GitHub Advanced Security and secret scanning features for the repository. Leave null to not manage this setting. | <pre>object({<br>    advanced_security               = optional(object({ status = string }))<br>    secret_scanning                 = optional(object({ status = string }))<br>    secret_scanning_push_protection = optional(object({ status = string }))<br>  })</pre> | `null` | no |
+| <a name="input_security_and_analysis"></a> [security\_and\_analysis](#input\_security\_and\_analysis) | Configure GitHub Advanced Security and secret scanning features for the repository. Leave null to not manage this setting. | <pre>object({<br/>    advanced_security               = optional(object({ status = string }))<br/>    secret_scanning                 = optional(object({ status = string }))<br/>    secret_scanning_push_protection = optional(object({ status = string }))<br/>  })</pre> | `null` | no |
 | <a name="input_squash_merge_commit_message"></a> [squash\_merge\_commit\_message](#input\_squash\_merge\_commit\_message) | Can be PR\_BODY, COMMIT\_MESSAGES, or BLANK. | `string` | `null` | no |
 | <a name="input_squash_merge_commit_title"></a> [squash\_merge\_commit\_title](#input\_squash\_merge\_commit\_title) | Can be PR\_TITLE or COMMIT\_OR\_PR\_TITLE. | `string` | `null` | no |
-| <a name="input_template"></a> [template](#input\_template) | Template repository to use. | <pre>object({<br>    owner      = string<br>    repository = string<br>  })</pre> | `null` | no |
+| <a name="input_template"></a> [template](#input\_template) | Template repository to use. | <pre>object({<br/>    owner      = string<br/>    repository = string<br/>  })</pre> | `null` | no |
 | <a name="input_topics"></a> [topics](#input\_topics) | The list of topics of the repository. | `list(string)` | `null` | no |
 | <a name="input_triage_collaborators"></a> [triage\_collaborators](#input\_triage\_collaborators) | A list of users to add as collaborators granting them triage permission. | `list(string)` | `[]` | no |
 | <a name="input_triage_team_ids"></a> [triage\_team\_ids](#input\_triage\_team\_ids) | A list of teams by id to grant triage permission to. | `list(string)` | `[]` | no |
@@ -148,5 +147,4 @@ module "example_repository" {
   archived    = false
 }
 ```
-
 <!-- END_TF_DOCS -->
