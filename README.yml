@@ -1,0 +1,27 @@
+name: terraform-github-repository
+repo_url: https://github.com/rafalmasiarek/terraform-github-repository
+license: MIT
+
+context:
+  - "## About"
+  - A [Terraform][1] module for creating a public or private repository on [GitHub][2].
+
+includes:
+  - docs/terraform.md
+
+references:
+  - https://www.terraform.io/
+  - https://github.com/
+  - https://github.com/github/gitignore
+  - https://github.com/github/choosealicense.com/tree/gh-pages/_licenses
+  - https://www.terraform.io/docs/providers/github/r/repository_webhook.html
+  - https://www.terraform.io/docs/providers/github/r/actions_secret
+  - https://registry.terraform.io/providers/integrations/github/latest/docs/resources/repository_autolink_reference
+  - https://github.com/hashicorp/terraform/issues/19898
+  - https://github.com/hashicorp/terraform/issues/22449
+
+authors:
+  - name: Rafał Masiarek
+    email: rafal@masiarek.pl
+    github: rafalmasiarek
+    website: https://masiarek.pl
